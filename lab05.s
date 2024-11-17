@@ -67,6 +67,10 @@ taken:
 # ----------------------------------------------------------------------------------------
 # TODO: Add an example where an instruction passes its result to the 2nd following instruction
 # There should be no stalls
+    add t1, zero, s1 # t1 = 1
+    add t2, zero, s2 # t2 = 2
+    addi t3, t1, 1 # t3 = 2
+    addi t4, t2, 2 # t4 = 4
 # ----------------------------------------------------------------------------------------
     # nop instructions added between examples
     add  zero, zero, zero  
@@ -78,6 +82,9 @@ taken:
 # A double hazzard is when the source register of an instruction matches the destination
 #  registers of both of the two instructions preceeding it. It should get the newest value.
 # There should be no stalls
+    add t1, zero, s1 # t1 = 1
+    add t1, s1, s3   # t1 = 4
+    add t3, t1, s3   # t3 = 7
 # ----------------------------------------------------------------------------------------
     # nop instructions added between examples
     add  zero, zero, zero  
@@ -87,6 +94,9 @@ taken:
 # ----------------------------------------------------------------------------------------
 # TODO: Add an example with a load stalling for 1 cycle to pass a value to a NOT-TAKEN branch 
 #  Is this a data hazard or a control hazard?
+    lw t0, 4(a0) # t0 = 10
+    beq t0, zero, exit # Depedence on t0 is a data hazard
+                       #The branch itself can be a control hazard,it taken
 # ----------------------------------------------------------------------------------------
     # nop instructions added between examples
     add  zero, zero, zero  
@@ -95,6 +105,10 @@ taken:
 
 # ----------------------------------------------------------------------------------------
 # TODO: Add an example with taken branch to a label which is immediately following the branch
+    beq s0, zero, label1
+label1:
+    add t0, zero, s2 # t0 = 2 branch penalty = 3 cycles
+    add t1, zero, s3 # t1 = 3
 # ----------------------------------------------------------------------------------------
 
 
